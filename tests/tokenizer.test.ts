@@ -38,6 +38,28 @@ describe('Tokenizer', () => {
             { type: 'SEMICOLON' }
         ]);
     });
+
+    it('tokenizes a two let statements', () => {
+        const code = 'let x = 42 + 3;\nlet y = 5 / 2;';
+        const tokens = tokenize(code);
+
+        expect(tokens).toEqual([
+            { type: 'LET' },
+            { type: 'IDENTIFIER', value: 'x' },
+            { type: 'EQUAL' },
+            { type: 'NUMBER', value: 42 },
+            { type: 'PLUS' },
+            { type: 'NUMBER', value: 3 },
+            { type: 'SEMICOLON' },
+            { type: 'LET' },
+            { type: 'IDENTIFIER', value: 'y' },
+            { type: 'EQUAL' },
+            { type: 'NUMBER', value: 5 },
+            { type: 'DIVIDE' },
+            { type: 'NUMBER', value: 2 },
+            { type: 'SEMICOLON' }
+        ]);
+    });
     // # endregion
 
     // #region tokenizeWord
@@ -184,6 +206,19 @@ describe('Tokenizer', () => {
             { type: 'IDENTIFIER', value: 'x' }
         ];
         handleSpecialCharacter(' ', 'word', tokens);
+        expect(tokens).toEqual([
+            { type: 'LET' },
+            { type: 'IDENTIFIER', value: 'x' },
+            { type: 'IDENTIFIER', value: 'word' }
+        ]);
+    });
+
+    it('should handle line return \n', () => {
+        const tokens: Token[] = [
+            { type: 'LET' },
+            { type: 'IDENTIFIER', value: 'x' }
+        ];
+        handleSpecialCharacter('\n', 'word', tokens);
         expect(tokens).toEqual([
             { type: 'LET' },
             { type: 'IDENTIFIER', value: 'x' },

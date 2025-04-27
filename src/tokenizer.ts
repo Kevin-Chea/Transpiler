@@ -1,6 +1,6 @@
 import { Token, TokenType } from './types/token';
 
-const specialCharacters = ['+', '-', '*', '/', ' ', ';', '='];
+const specialCharacters = ['+', '-', '*', '/', ' ', ';', '=', '\n'];
 
 export function tokenize(code: string) {
     const tokens: Token[] = [];
