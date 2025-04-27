@@ -1,6 +1,6 @@
-import { Token } from './types/token';
+import { Token, TokenType } from './types/token';
 
-const operators = ['+', '-', '*', '/'];
+const specialCharacters = ['+', '-', '*', '/', ' ', ';', '='];
 
 export function tokenize(code: string) {
     const tokens: Token[] = [];
@@ -10,37 +10,8 @@ export function tokenize(code: string) {
     for (let i = 0; i < code.length; i++) {
         const char = code[i];
 
-        // Space: skip it
-        if (char == ' ') {
-            tokenizeWord(currentWord, tokens);
-            currentWord = '';
-            continue;
-        }
-
-        if (char == '+') {
-            tokenizeWord(currentWord, tokens);
-            tokens.push({
-                type: 'PLUS'
-            });
-            currentWord = '';
-            continue;
-        }
-
-        if (char == '=') {
-            tokenizeWord(currentWord, tokens);
-            tokens.push({
-                type: 'EQUAL'
-            });
-            currentWord = '';
-            console.log(currentWord);
-            continue;
-        }
-
-        if (char == ';') {
-            tokenizeWord(currentWord, tokens);
-            tokens.push({
-                type: 'SEMICOLON'
-            });
+        if (specialCharacters.includes(char)) {
+            handleSpecialCharacter(char, currentWord, tokens);
             currentWord = '';
             continue;
         }
@@ -51,26 +22,57 @@ export function tokenize(code: string) {
 }
 
 export function tokenizeWord(currentWord: string, tokens: Token[]) {
-    if (currentWord.length) {
-        switch (currentWord) {
-            case 'let':
-                tokens.push({
-                    type: 'LET'
-                });
-                break;
-            default:
-                const mayBeNumber = Number(currentWord);
-                if (!Number.isNaN(mayBeNumber)) {
-                    tokens.push({
-                        type: 'NUMBER',
-                        value: mayBeNumber
-                    });
-                } else {
-                    tokens.push({
-                        type: 'IDENTIFIER',
-                        value: currentWord
-                    });
-                }
-        }
+    if (!currentWord.length) return;
+
+    switch (currentWord) {
+        case 'let':
+            addToken(tokens, 'LET');
+            break;
+        default:
+            const mayBeNumber = Number(currentWord);
+            if (!Number.isNaN(mayBeNumber)) {
+                addToken(tokens, 'NUMBER', mayBeNumber);
+            } else {
+                addToken(tokens, 'IDENTIFIER', currentWord);
+            }
     }
+}
+
+export function handleSpecialCharacter(
+    char: string,
+    currentWord: string,
+    tokens: Token[]
+) {
+    tokenizeWord(currentWord, tokens);
+    switch (char) {
+        case '+':
+            addToken(tokens, 'PLUS');
+            break;
+        case '-':
+            addToken(tokens, 'MINUS');
+            break;
+        case '*':
+            addToken(tokens, 'MULTIPLY');
+            break;
+        case '/':
+            addToken(tokens, 'DIVIDE');
+            break;
+        case ';':
+            addToken(tokens, 'SEMICOLON');
+            break;
+        case '=':
+            addToken(tokens, 'EQUAL');
+            break;
+    }
+}
+
+export function addToken(
+    tokens: Token[],
+    type: TokenType,
+    value?: string | number
+) {
+    tokens.push({
+        type,
+        value
+    });
 }
