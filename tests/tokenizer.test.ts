@@ -40,7 +40,7 @@ describe('Tokenizer', () => {
     });
 
     it('tokenizes a two let statements', () => {
-        const code = 'let x = 42 + 3;\nlet y = 5 / 2;';
+        const code = '\nlet x = 42 + 3;\nlet y = 5 / 2;\n\n';
         const tokens = tokenize(code);
 
         expect(tokens).toEqual([
