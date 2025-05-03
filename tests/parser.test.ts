@@ -8,7 +8,7 @@ import {
 } from '../src/parser';
 import { Token } from '../src/types/token';
 
-describe('Tokenizer', () => {
+describe('Parser', () => {
     // #region tryParseLiteral
     it('should try Parse Literal', () => {
         const tokens: Token[] = [{ type: 'NUMBER', value: 2 }];
