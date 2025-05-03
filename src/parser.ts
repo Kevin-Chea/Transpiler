@@ -57,8 +57,10 @@ export function parse(tokens: Token[]) {
     const parser = new Parser(tokens);
     while (parser.peek()) {
         const res = parser.tryParse(tryParseVariableDeclaration);
-        // TODO: throw error
-        if (!res) break;
+        if (!res) {
+            throw new Error('Error while parsing');
+        }
+        console.log(res);
         programAST.body.push(res);
     }
     return programAST;

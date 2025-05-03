@@ -163,5 +163,55 @@ describe('Tokenizer', () => {
         const res = parse(tokens);
         expect(res).toEqual(expected);
     });
+
+    it('should parse two var declarations', () => {
+        const expected = {
+            type: 'Program',
+            body: [
+                {
+                    type: 'VariableDeclaration',
+                    name: 'x',
+                    value: {
+                        type: 'BinaryExpression',
+                        operator: 'DIVIDE',
+                        left: {
+                            type: 'Literal',
+                            value: 42
+                        },
+                        right: {
+                            type: 'Literal',
+                            value: 3
+                        }
+                    }
+                },
+                {
+                    type: 'VariableDeclaration',
+                    name: 'y',
+                    value: {
+                        type: 'Literal',
+                        value: 42
+                    }
+                }
+            ]
+        };
+
+        const tokens: Token[] = [
+            { type: 'LET' },
+            { type: 'IDENTIFIER', value: 'x' },
+            { type: 'EQUAL' },
+            { type: 'NUMBER', value: 42 },
+            { type: 'DIVIDE' },
+            { type: 'NUMBER', value: 3 },
+            { type: 'SEMICOLON' },
+            { type: 'LET' },
+            { type: 'IDENTIFIER', value: 'y' },
+            { type: 'EQUAL' },
+            { type: 'NUMBER', value: 42 },
+            { type: 'SEMICOLON' }
+        ];
+
+        const res = parse(tokens);
+        expect(res).toEqual(expected);
+    });
     // #endregion
 });
