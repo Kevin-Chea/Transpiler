@@ -60,7 +60,6 @@ export function parse(tokens: Token[]) {
         if (!res) {
             throw new Error('Error while parsing');
         }
-        console.log(res);
         programAST.body.push(res);
     }
     return programAST;
