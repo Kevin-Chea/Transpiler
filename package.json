@@ -1,11 +1,16 @@
 {
     "name": "tiny-script",
     "version": "0.0.1",
+    "type": "module",
+    "bin": {
+      "tiny": "./dist/cli.js"
+    },
     "scripts": {
         "start": "ts-node src/index.ts",
         "test": "jest",
         "lint": "eslint .",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "build": "tsc && node scripts/postProcess.js"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
